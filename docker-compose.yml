@@ -1,0 +1,39 @@
+services:
+
+  backend:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: scoreboard-backend
+    ports:
+      - "80:8000"
+    environment:
+      HOST_DB: db
+      PORT_DB: ${PORT_DB}
+      NAME_DB: ${NAME_DB}
+      USER_DB: ${USER_DB}
+      PASSWORD_DB: ${PASSWORD_DB}
+    networks:
+      - app_network
+    depends_on:
+      - db
+
+  db:
+    container_name: scoreboard-postgres
+    image: postgres:16.2-alpine3.19
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${NAME_DB}
+      POSTGRES_USER: ${USER_DB}
+      POSTGRES_PASSWORD: ${PASSWORD_DB}
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+volumes:
+  postgres_data:
