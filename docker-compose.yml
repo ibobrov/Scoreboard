@@ -6,7 +6,7 @@ services:
         dockerfile: Dockerfile
     container_name: scoreboard-backend
     ports:
-      - "80:8000"
+      - "80:80"
     environment:
       HOST_DB: db
       PORT_DB: ${PORT_DB}
